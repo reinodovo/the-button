@@ -39,6 +39,16 @@ ActionTypes correctAction(BombInfo bombInfo) {
       case ButtonWord:
         matches &= condition.word == buttonWord;
         break;
+      case PuzzleModulesSolved:
+        matches &= bombInfo.solved_puzzle_modules % 2 ==
+                   !condition.puzzleModulesSolvedEven;
+        break;
+      case PuzzleModulesPending:
+        matches &=
+            (bombInfo.total_puzzle_modules - bombInfo.solved_puzzle_modules) %
+                2 ==
+            !condition.puzzleModulesPendingEven;
+        break;
       }
     }
     if (!matches)

@@ -60,7 +60,6 @@ Rule createRandomRule(bool lastRule = false) {
       rule.conditions.push_back(condition);
     }
   }
-  rule.action = (ActionTypes)randRange(0, 1);
   return rule;
 }
 
@@ -70,6 +69,10 @@ Rules generateRules(int code) {
   for (int i = 0; i < RULES - 1; i++)
     rules.rules.push_back(createRandomRule());
   rules.rules.push_back(createRandomRule(true));
+  int firstAction = randRange(0, 1);
+  for (int i = 0; i < RULES; i++) {
+    rules.rules[i].action = (ActionTypes)((firstAction + i) % 2);
+  }
   rules.defaultPressAndHoldDigit = randRange(0, 9);
   while (rules.pressAndHoldDigits.size() != PRESS_AND_HOLD_CASES) {
     PressAndHoldDigit pressAndHoldDigit;
