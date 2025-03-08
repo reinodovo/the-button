@@ -3,6 +3,5 @@
 .vscode/c_cpp_properties.json
 .vscode/launch.json
 .vscode/ipch
-models
-manual/pages
-manual/rules.html
+*.stl
+manual/data/*

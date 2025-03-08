@@ -1,0 +1,13 @@
+<p>Follow these rules in the order they are listed. Perform the first action that applies:</p>
+<ol>
+  {% for rule in rules %}
+  <li>If {% for condition in rule.conditions %}{{condition}}{% if loop.index1 != rule.numberOfConditions %}&nbsp;and&nbsp;{% endif %}{% endfor %}{% if rule.numberOfConditions == 0 %}none of the above apply{% endif %}, {{rule.action}}.</li>{% endfor %}
+</ol>
+<h3>Releasing a Held Button</h3>
+<p>If you start holding the button down, a colored strip will light up on the right side of the module. Based on its color, you must release the button at a specific point in time:</p>
+<ul>
+  {% for info in pressAndHoldDigits %}
+  <li><em><span>{{info.color}} strip:</span></em><span> release when the countdown timer has a{% if info.digit == 8 %}n{% endif %}&nbsp;{{info.digit}} in any position</span></li>
+  {% endfor %}
+  <li><em><span>Any other color strip:</span></em><span> release when the countdown timer has a{% if defaultPressAndHoldDigit == 8 %}n{% endif %}&nbsp;{{defaultPressAndHoldDigit}} in any position</span></li>
+</ul>

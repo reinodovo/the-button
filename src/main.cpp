@@ -113,7 +113,7 @@ void onStateChange(ButtonState newState, ButtonState oldState) {
     stripLED.setColor(stripColor);
   else if (newState == ButtonState::Released) {
     stripLED.off();
-    PuzzleModule::withBombInfo([oldState](BombInfo info) {
+    Module::withBombInfo([oldState](BombInfo info) {
       trySolve(info,
                oldState == ButtonState::Held ? PressAndHold : PressAndRelease);
     });
@@ -136,12 +136,14 @@ void setup() {
   if (!display.begin(SSD1306_SWITCHCAPVCC, 0x3C))
     ESP.restart();
 
-  PuzzleModule::onStart = start;
-  PuzzleModule::onRestart = restart;
-  PuzzleModule::onManualCode = onManualCode;
+  Module::onStart = start;
+  Module::onRestart = restart;
+  Module::onManualCode = onManualCode;
+  Module::name = "The Button";
+  PuzzleModule::statusLight =
+      PuzzleModule::StatusLight(RED_PIN, GREEN_PIN, false);
 
-  if (!PuzzleModule::setup(
-          PuzzleModule::StatusLight(RED_PIN, GREEN_PIN, false)))
+  if (!PuzzleModule::setup())
     ESP.restart();
 
   button.onStateChange = onStateChange;
