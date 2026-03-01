@@ -7,13 +7,12 @@
 struct RGBLed {
   int redPin, greenPin, bluePin;
   RGBLed() {}
-  RGBLed(int redPin, int greenPin, int bluePin)
-      : redPin(redPin), greenPin(greenPin), bluePin(bluePin) {
+  RGBLed(int redPin, int greenPin, int bluePin) : redPin(redPin), greenPin(greenPin), bluePin(bluePin) {
     pinMode(redPin, OUTPUT);
     pinMode(greenPin, OUTPUT);
     pinMode(bluePin, OUTPUT);
   }
-  void setColor(Colors color) {
+  void set_color(Colors color) {
     int red = color == Red || color == Yellow || color == Magenta;
     int green = color == Green || color == Yellow;
     int blue = color == Blue || color == Magenta;
@@ -28,4 +27,4 @@ struct RGBLed {
   }
 };
 
-#endif // RGB_LED
+#endif  // RGB_LED

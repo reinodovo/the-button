@@ -1,89 +1,87 @@
-#include <random>
 #include <rules.h>
+
+#include <random>
 
 std::mt19937 rng;
 
 const int RULES = 7;
 const int PRESS_AND_HOLD_CASES = 3;
-const float doubleConditionChance = 0.8;
+const float double_condition_chance = 0.8;
 
-std::string getWordString(Words word) {
+std::string get_word_string(Words word) {
   switch (word) {
-  case Abort:
-    return "ABORT";
-  case Detonate:
-    return "DETONATE";
-  case Hold:
-    return "HOLD";
-  case Press:
-    return "PRESS";
-  case Wait:
-    return "WAIT";
-  default:
-    return "";
+    case Abort:
+      return "ABORT";
+    case Detonate:
+      return "DETONATE";
+    case Hold:
+      return "HOLD";
+    case Press:
+      return "PRESS";
+    case Wait:
+      return "WAIT";
+    default:
+      return "";
   }
 }
 
-int randRange(int min, int max) { return rng() % (max - min + 1) + min; }
+int rand_range(int min, int max) { return rng() % (max - min + 1) + min; }
 
-Condition createRandomCondition() {
+Condition create_random_condition() {
   Condition condition;
-  condition.type = (ConditionTypes)randRange(0, 3);
+  condition.type = (ConditionTypes)rand_range(0, 3);
   switch (condition.type) {
-  case ButtonColor:
-    condition.color = (Colors)randRange(0, COLORS - 1);
-    break;
-  case ButtonWord:
-    condition.word = (Words)randRange(0, WORDS - 1);
-    break;
-  case PuzzleModulesSolved:
-    condition.puzzleModulesSolvedEven = randRange(0, 1);
-    break;
-  case PuzzleModulesPending:
-    condition.puzzleModulesPendingEven = randRange(0, 1);
-    break;
+    case ButtonColor:
+      condition.color = (Colors)rand_range(0, COLORS - 1);
+      break;
+    case ButtonWord:
+      condition.word = (Words)rand_range(0, WORDS - 1);
+      break;
+    case PuzzleModulesSolved:
+      condition.puzzle_modules_solved_even = rand_range(0, 1);
+      break;
+    case PuzzleModulesPending:
+      condition.puzzle_modules_pending_even = rand_range(0, 1);
+      break;
   }
   return condition;
 }
 
-bool isRedundant(Condition a, Condition b) { return a.type == b.type; }
+bool is_redundant(Condition a, Condition b) { return a.type == b.type; }
 
-Rule createRandomRule(bool lastRule = false) {
+Rule create_random_rule(bool last_rule = false) {
   Rule rule;
-  if (!lastRule) {
-    rule.conditions.push_back(createRandomCondition());
-    if (rng() % 100 < doubleConditionChance * 100) {
+  if (!last_rule) {
+    rule.conditions.push_back(create_random_condition());
+    if (rng() % 100 < double_condition_chance * 100) {
       Condition condition;
       do {
-        condition = createRandomCondition();
-      } while (isRedundant(rule.conditions[0], condition));
+        condition = create_random_condition();
+      } while (is_redundant(rule.conditions[0], condition));
       rule.conditions.push_back(condition);
     }
   }
   return rule;
 }
 
-Rules generateRules(int code) {
+Rules generate_rules(int code) {
   rng = std::mt19937(code);
   Rules rules;
-  for (int i = 0; i < RULES - 1; i++)
-    rules.rules.push_back(createRandomRule());
-  rules.rules.push_back(createRandomRule(true));
-  int firstAction = randRange(0, 1);
+  for (int i = 0; i < RULES - 1; i++) rules.rules.push_back(create_random_rule());
+  rules.rules.push_back(create_random_rule(true));
+  int first_action = rand_range(0, 1);
   for (int i = 0; i < RULES; i++) {
-    rules.rules[i].action = (ActionTypes)((firstAction + i) % 2);
+    rules.rules[i].action = (ActionTypes)((first_action + i) % 2);
   }
-  rules.defaultPressAndHoldDigit = randRange(0, 9);
-  while (rules.pressAndHoldDigits.size() != PRESS_AND_HOLD_CASES) {
-    PressAndHoldDigit pressAndHoldDigit;
-    pressAndHoldDigit.color = (Colors)randRange(0, COLORS - 1);
-    pressAndHoldDigit.digit = randRange(0, 9);
+  rules.default_press_and_hold_digit = rand_range(0, 9);
+  while (rules.press_and_hold_digits.size() != PRESS_AND_HOLD_CASES) {
+    PressAndHoldDigit press_and_hold_digit;
+    press_and_hold_digit.color = (Colors)rand_range(0, COLORS - 1);
+    press_and_hold_digit.digit = rand_range(0, 9);
     bool ok = true;
-    for (int i = 0; i < rules.pressAndHoldDigits.size(); i++)
-      if (rules.pressAndHoldDigits[i].color == pressAndHoldDigit.color)
-        ok = false;
-    if (ok)
-      rules.pressAndHoldDigits.push_back(pressAndHoldDigit);
+    for (int i = 0; i < rules.press_and_hold_digits.size(); i++)
+      if (rules.press_and_hold_digits[i].color == press_and_hold_digit.color) ok = false;
+    if (ok) rules.press_and_hold_digits.push_back(press_and_hold_digit);
   }
   return rules;
 }

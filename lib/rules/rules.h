@@ -20,8 +20,8 @@ struct Condition {
   ConditionTypes type;
   Colors color;
   Words word;
-  bool puzzleModulesSolvedEven;
-  bool puzzleModulesPendingEven;
+  bool puzzle_modules_solved_even;
+  bool puzzle_modules_pending_even;
 };
 
 enum ActionTypes {
@@ -41,11 +41,11 @@ struct Rule {
 
 struct Rules {
   std::vector<Rule> rules;
-  std::vector<PressAndHoldDigit> pressAndHoldDigits;
-  int defaultPressAndHoldDigit;
+  std::vector<PressAndHoldDigit> press_and_hold_digits;
+  int default_press_and_hold_digit;
 };
 
-std::string getWordString(Words word);
-Rules generateRules(int code);
+std::string get_word_string(Words word);
+Rules generate_rules(int code);
 
-#endif // RULES_H
+#endif  // RULES_H
